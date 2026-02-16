@@ -6,7 +6,7 @@
 ;; URL: https://github.com/rksm/clj-org-analyzer
 ;; Keywords: calendar
 ;; Version: 1.0.4
-;; Package-Requires: ((emacs "26"))
+;; Package-Requires: ((emacs "26.1"))
 
 ;; Permission is hereby granted, free of charge, to any person obtaining a copy
 ;; of this software and associated documentation files (the "Software"), to
@@ -91,7 +91,7 @@ Argument ORG-DIR is where the org-files are located."
     (warn "org-analyzer was started with org-directory set to
   \"%s\"\nbut this directory does not exist.
 Please set the variable `org-directory' to the location where you keep your org files."
-           org-directory))
+          org-directory))
   (let ((jar-file (org-analyzer-locate-jar))
         (full-java-command (executable-find org-analyzer-java-program)))
     (unless jar-file
@@ -194,11 +194,11 @@ Emacs in WSL but org-analyzer in Windows proper — or vice versa."
   (let ((possible-file-paths (if (string-equal system-type "windows-nt")
                                  (org-analyzer-possible-windows-paths path)
                                (list path))))
-    (loop for p in possible-file-paths
-          when (file-exists-p p)
-          do (let ((buffer (or (find-buffer-visiting p)
-                               (find-file-noselect p))))
-               (return buffer)))))
+    (cl-loop for p in possible-file-paths
+             when (file-exists-p p)
+             do (let ((buffer (or (find-buffer-visiting p)
+                                  (find-file-noselect p))))
+                  (cl-return buffer)))))
 
 (defun org-analyzer-open-org-file-and-select (path heading)
   "Opens the org file at PATH, try to find the section HEADING, and reveals it."
